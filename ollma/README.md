@@ -1,9 +1,11 @@
 # Project 1: Ollama with GPU support
 
 Create ollama lxc
+
 `$sudo lxc-create --name ollama --template download -- --dist ubuntu --release noble --arch amd64 --variant cloud`
 
 `$sudo lxc-info ollama`
+
 `lxc-ls -f`
 
 If no dhcp from cloud-init
