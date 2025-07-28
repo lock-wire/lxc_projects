@@ -14,6 +14,14 @@ If no dhcp from cloud-init
 ```
 #lxc-attach ollama
 #cloud-init clean
+cat <<EOF>/etc/netplan/50_cloud_init.yaml
+#cloud-config
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: true
+EOF
 #reboot
 ```
 ```
