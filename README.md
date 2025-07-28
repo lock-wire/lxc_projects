@@ -28,7 +28,7 @@ dhcp-host=<container_name>,10.0.3.10
 ## UFW Prep
 Establish route for outbound traffic from lxc bridge
 ```
-sudo ufw route allow out on lxcbr0`
+sudo ufw route allow out on lxcbr0
 ```
 Establish route for inbound traffic to lxc bridge
 ```
