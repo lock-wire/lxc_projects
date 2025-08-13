@@ -1,8 +1,8 @@
-# Project 2: Ollama with GPU support
+# Project 3: Apache Tika for document extraction with Open WebUI
 
-Create ollama lxc
+Create apache-tika lxc
 ```
-$ sudo lxc-create --name openwebui --template download -- --dist ubuntu --release noble --arch amd64 --variant cloud
+$ sudo lxc-create --name apache-tika --template download -- --dist ubuntu --release noble --arch amd64 --variant cloud
 ```
 ```
 $ sudo lxc-info openwebui
@@ -12,7 +12,7 @@ lxc-ls -f
 ```
 If no dhcp from cloud-init
 ```
-# lxc-attach ollama
+# lxc-attach apache-tika
 # cloud-init clean
 # cat <<EOF>/etc/netplan/50_cloud_init.yaml
 #cloud-config
@@ -29,18 +29,16 @@ EOF
 lxc-ls -f
 ```
 
-## Install Open-WebUI from Docker
+## Install Apache Tika
 ```
-apt install -y ca-certificates curl 
-sudo apt-get update
-sudo apt-get install ca-certificates curl gnupg lsb-releasesudo
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-docker pull ghcr.io/open-webui/open-webui:main
-docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=<ollama_ip>:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+RELEASE="$(curl -fsSL https://dlcdn.apache.org/tika/ | grep -oP '(?<=href=")[0-9]+\.[0-9]+\.[0-9]+(?=/")' | sort -V | tail -n1)"
+mkdir /opt/apache-tika
+cd /opt/apache-tika
+curl -fsSL -o tika-server-standard-${RELEASE}.jar "https://dlcdn.apache.org/tika/${RELEASE}/tika-server-standard-${RELEASE}.jar"
+mv --force tika-server-standard.jar tika-server-standard-prev-version.jar
+mv tika-server-standard-${RELEASE}.jar tika-server-standard.jar
+systemctl start apache-tika
+rm -rf /opt/apache-tika/tika-server-standard-prev-version.jar
 ```
 
 # --- Work in progresss---
