@@ -31,14 +31,36 @@ lxc-ls -f
 
 ## Install Apache Tika
 ```
+apt update
+apt upgrade
+sudo apt install -y curl
+sudo apt install -y default-jdk
 RELEASE="$(curl -fsSL https://dlcdn.apache.org/tika/ | grep -oP '(?<=href=")[0-9]+\.[0-9]+\.[0-9]+(?=/")' | sort -V | tail -n1)"
 mkdir /opt/apache-tika
 cd /opt/apache-tika
 curl -fsSL -o tika-server-standard-${RELEASE}.jar "https://dlcdn.apache.org/tika/${RELEASE}/tika-server-standard-${RELEASE}.jar"
 mv --force tika-server-standard.jar tika-server-standard-prev-version.jar
 mv tika-server-standard-${RELEASE}.jar tika-server-standard.jar
+```
+## Create Service and run
+```
+# cat <<EOF >/etc/systemd/system/apache-tika.service
+[Unit]
+Description=Apache Tika Server
+After=network-online.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/java -jar /opt/apache-tika/tika-server-standard.jar --port 9998 -h 0.0.0.0
+Restart=on-failure
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl enable apache-tika
 systemctl start apache-tika
-rm -rf /opt/apache-tika/tika-server-standard-prev-version.jar
 ```
 
 # --- Work in progresss---
