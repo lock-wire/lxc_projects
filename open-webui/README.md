@@ -45,12 +45,13 @@ docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=<ollama_ip>:11434 -v open-webui:/a
 
 # --- Work in progresss---
 # Add the repository to Apt sources:
+```
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
-
+```
 
 ## Install Open-WebUI
 Referenced proxmox helper script (https://github.com/community-scripts/ProxmoxVE/blob/main/install/openwebui-install.sh)
