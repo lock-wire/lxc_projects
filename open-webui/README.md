@@ -29,6 +29,25 @@ EOF
 lxc-ls -f
 ```
 
+Add to container if static ip desired.
+```
+cat <<EOF>>/etc/netplan/25_static_init.yaml
+#cloud-config
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses: [10.0.3.15/24]
+      routes:
+        - to: default
+          via: 10.0.3.1
+      nameservers:
+        addresses: [localhost]
+EOF
+```
+
+
 ## Install Open-WebUI from Docker
 ```
 apt install -y ca-certificates curl 
