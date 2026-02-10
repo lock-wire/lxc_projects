@@ -109,6 +109,7 @@ Environment=HOME=$HOME
 Environment=OLLAMA_HOST=0.0.0.0
 Environment=SYCL_CACHE_PERSISTENT=1
 Environment=ZES_ENABLE_SYSMAN=1
+Environment=OLLAMA_VULKAN=1
 Restart=always
 RestartSec=3
 
